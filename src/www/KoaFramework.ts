@@ -4,12 +4,16 @@
 import Koa from 'koa'
 import koaCors from 'koa-cors'
 import koaBody from 'koa-body'
+import router from "../modules/usermodel/user.controller"
+
 
 export default class Server {
   private Server:Koa
   constructor(port:number){
     this.Server = new Koa()
     this.init().then(() => {
+      console.log(`aaaa`);
+      
       this.start(port)
     })
   }
@@ -19,6 +23,9 @@ export default class Server {
    */
   private async init(){
     this.Server.use(koaCors()).use(koaBody())
+   console.time('router')
+    this.Server.use(router.routes()).use(router.allowedMethods())
+    console.timeEnd('router')
   }
 
   /**
